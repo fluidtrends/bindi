@@ -3,7 +3,6 @@
 var express     = require('express')
 var bodyParser  = require('body-parser')
 var cors        = require('cors')
-var routes      = require('./routes')
 var chalk       = require('chalk')
 
 class Server {
@@ -22,14 +21,14 @@ class Server {
   }
 
   mountRoutes() {
-    routes.forEach(route => {
-      this.app.use(route.path, route.router)
+    this.props.routes.forEach(route => {
+      this.app.use(route.endpoint, route.router)
     })
   }
 
   start() {
-    this.app.listen(this.props.port, () => {
-      console.log(chalk.bold("[Chunky]"), chalk.green('API Server ready on port'), chalk.bold(this.props.port))
+    this.app.listen(this.props.config.port, () => {
+      console.log(chalk.bold("[Chunky]"), chalk.green('API Server ready on port'), chalk.bold(this.props.config.port))
     })
   }
 
