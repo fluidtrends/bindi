@@ -1,0 +1,10 @@
+{
+  "name": "bindi",
+  "version": "0.1.0",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "mongoose": "^4.6.4"
+  }
+}
