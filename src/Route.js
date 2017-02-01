@@ -6,16 +6,31 @@ const chalk = require('chalk')
 const utils = require('./utils')
 const mongoose = require('mongoose')
 const moment = require('moment')
+const Function = require('./Function')
+
+const EVENTS = ({
+  POST_OK: "POST_OK",
+  POST_ERROR: "POST_ERROR",
+  GET_OK: "GET_OK",
+  GET_ERROR: "GET_ERROR",
+  GET_ALL_OK: "GET_ALL_OK",
+  GET_ALL_ERROR: "GET_ALL_ERROR"
+})
 
 class Route {
 
-  constructor(props, vault) {
+  constructor(props, vault, spec) {
     this._props = props
     this._vault = vault
+    this._spec = spec
 
-    if (props.fields) {
+    this.configure()
+  }
+
+  configure() {
+    if (this.props.fields) {
       var fields = {timestamp: { type: Date, default: Date.now }}
-      props.fields.map(field => {
+      this.props.fields.map(field => {
         fields[field.name] = { type: field.type }
         if (field.required) {
           fields[field.name].required = [field.required, field.name + " field is required" ]
@@ -25,10 +40,23 @@ class Route {
       this._model = mongoose.model(this.name, this._schema)
     }
 
-    try {
-      this._lib = require(props.lib)
-    } catch (e) {
+    this._functions = []
+    if (this.props.functions) {
+      this.props.functions.forEach(func => {
+        try {
+          const exec = require(path.resolve(this.spec.dir, "functions", func.lib))
+          this._functions.push({
+            type: func.type, exec
+          })
+        } catch (e) {
+
+        }
+      })
     }
+  }
+
+  get spec () {
+    return this._spec
   }
 
   get props() {
@@ -45,14 +73,6 @@ class Route {
 
   get path() {
     return this.props.path
-  }
-
-  get lib () {
-    return this._lib
-  }
-
-  get hasLib() {
-    return (this.lib != undefined)
   }
 
   get model() {
@@ -73,6 +93,10 @@ class Route {
 
   get isSecure() {
     return this.props.secure
+  }
+
+  get functions() {
+    return this._functions
   }
 
   sanitizeItem(data, authorized) {
@@ -123,11 +147,22 @@ class Route {
     next()
   }
 
+  onEvent(eventType, data) {
+    if (!this.functions) {
+      return
+    }
+
+    this.functions.forEach(func => {
+      func.exec(data)
+    })
+  }
+
   get (req, res, next) {
     this.vault.isRequestAuthorized(req, (authorized) => {
       if (req.params.id) {
         // We want a single record only
         this.model.findOne({_id: req.params.id}, (error, data) => {
+          error ? this.onEvent(EVENTS.GET_ERROR, error) : this.onEvent(EVENTS.GET_OK, data)
           this.respond(res, error ? new Error('cannot find item') : this.sanitize(data, authorized))
         })
         return
@@ -135,6 +170,7 @@ class Route {
 
       // We're looking for all records
       this.model.find({}, (error, data) => {
+        error ? this.onEvent(EVENTS.GET_ALL_ERROR, error) : this.onEvent(EVENTS.GET_ALL_OK, data)
         this.respond(res, error ? new Error('cannot find items') : this.sanitize(data, authorized))
       })
     })
@@ -142,6 +178,7 @@ class Route {
 
   post (req, res, next) {
     this.model.create(req.body, (error, data) => {
+      error ? this.onEvent(EVENTS.POST_ERROR, error) : this.onEvent(EVENTS.POST_OK, data)
       this.respond(res, error ? new Error('cannot create item') : this.sanitize(data))
     })
   }

@@ -14,9 +14,9 @@ routes:
     - name: owner
       type: string
       secure: true
-    triggers:
-    - type: post
-      function: functions/sendMessage
+    functions:
+    - type: POST_OK
+      lib: sendMessage
   - name: reports
     path: /reports/:id?
     secure: true

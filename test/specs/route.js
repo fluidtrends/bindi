@@ -13,7 +13,6 @@ savor.add("should be able to create a route", (context, done) => {
   context.expect(route).to.exist
   context.expect(route.props).to.exist
   context.expect(route.name).to.equal('tests')
-  context.expect(route.hasLib).to.be.true
 
   done()
 }).

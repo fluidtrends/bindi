@@ -53,6 +53,10 @@ class Spec {
     return this.data.settings
   }
 
+  get dir() {
+    return path.dirname(this.file)
+  }
+
 }
 
 module.exports = Spec

@@ -19,7 +19,7 @@ class Router {
 
     this._routes = []
     this.spec.routes.forEach(routeProps => {
-      const route = new Route(routeProps, this.vault)
+      const route = new Route(routeProps, this.vault, this.spec)
       this._routes.push(route)
     })
   }
