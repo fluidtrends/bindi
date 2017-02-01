@@ -1,0 +1,25 @@
+name: bindi
+settings:
+  port: 9000
+  root: /api
+database:
+  name: bindi
+  host: localhost
+routes:
+  - name: events
+    path: /events/:id?
+    fields:
+    - name: name
+      type: string
+    - name: owner
+      type: string
+      secure: true
+    triggers:
+    - type: post
+      function: functions/sendMessage
+  - name: reports
+    path: /reports/:id?
+    secure: true
+    fields:
+    - name: name
+      type: string

@@ -1,0 +1,10 @@
+name: test
+settings:
+  port: 9000
+  root: /api
+database:
+  name: test
+  host: localhost
+routes:
+  - name: tests
+    path: /tests/:id

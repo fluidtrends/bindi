@@ -1,3 +1,5 @@
-var server = require('./server')
+var server = require('./src/server')
 
-module.exports = ({ server })
+module.exports = ({
+    server
+})
