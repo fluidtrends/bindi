@@ -5,6 +5,8 @@ settings:
 database:
   name: bindi
   host: localhost
+email:
+  from: 40 De Zile Pentru Viață <40@proviata.ro>
 routes:
   - name: events
     path: /events/:id?

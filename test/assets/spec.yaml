@@ -2,6 +2,8 @@ name: test
 settings:
   port: 9000
   root: /api
+email:
+  from: test@test.test
 database:
   name: test
   host: localhost

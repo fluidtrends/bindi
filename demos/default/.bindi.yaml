@@ -1,2 +1,5 @@
 key: 12345
 secret: 12345
+aws:
+  key: 1234
+  secret: 1234

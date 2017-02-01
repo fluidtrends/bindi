@@ -53,6 +53,10 @@ class Spec {
     return this.data.settings
   }
 
+  get email () {
+    return this.data.email
+  }
+
   get dir() {
     return path.dirname(this.file)
   }
