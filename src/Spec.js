@@ -15,7 +15,7 @@ class Spec {
     try {
       // Attempt to load from file, if any
       const raw = yaml.safeLoad(fs.readFileSync(this.file, 'utf8'))
-      this._data = this.root ? raw[root] : raw
+      this._data = this.root ? raw[this.root] : raw
 
       // Attempt to load from secure file, if any
       this._data.secure = yaml.safeLoad(fs.readFileSync(this.secureFile, 'utf8'))
