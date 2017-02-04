@@ -23,8 +23,6 @@ function start(file, root) {
       utils.logError(error.message)
       return
     }
-
-    utils.logInfo(chalk.green('started on port ') + chalk.bold(spec.settings.port))
   })
 }
 
