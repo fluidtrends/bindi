@@ -21,6 +21,7 @@ class Spec {
       if (this._data.routes) {
         // Resolve the routes
         this._data.routes = this._data.routes.map(route => this.loadRoute(route))
+        console.log(this.data.routes)
       }
 
       // Attempt to load from secure file, if any
