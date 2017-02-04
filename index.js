@@ -3,7 +3,7 @@
 const chalk = require('chalk')
 const Server = require('./src/Server')
 const Spec = require('./src/Spec')
-const utils = require('./utils')
+const utils = require('./src/utils')
 const path = require('path')
 
 function start(file, root) {
