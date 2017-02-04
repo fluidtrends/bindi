@@ -6,19 +6,25 @@ const yaml = require('js-yaml')
 
 class Spec {
 
-  constructor(file) {
+  constructor(file, root) {
     this._file = file
+    this._root = root
   }
 
   load () {
     try {
       // Attempt to load from file, if any
-      this._data = yaml.safeLoad(fs.readFileSync(this.file, 'utf8'))
+      const raw = yaml.safeLoad(fs.readFileSync(this.file, 'utf8'))
+      this._data = this.root ? raw[root] : raw
 
       // Attempt to load from secure file, if any
       this._data.secure = yaml.safeLoad(fs.readFileSync(this.secureFile, 'utf8'))
     } catch (e) {
     }
+  }
+
+  get root() {
+    return this._root
   }
 
   get exists() {
@@ -34,7 +40,7 @@ class Spec {
   }
 
   get hasData() {
-    return (this._data != undefined)
+    return (this.data != undefined)
   }
 
   get data() {

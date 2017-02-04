@@ -1,6 +1,6 @@
 {
   "name": "bindi",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Simple mobile-friendly API bindings",
   "scripts": {
     "savor": "savor",
