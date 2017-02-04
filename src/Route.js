@@ -166,7 +166,7 @@ class Route {
         // We want a single record only
         this.model.findOne({_id: req.params.id}, (error, data) => {
           error ? this.onEvent(EVENTS.GET_ERROR, error) : this.onEvent(EVENTS.GET_OK, data)
-          this.respond(res, error ? new Error('cannot find item') : this.sanitize(data, authorized))
+          this.respond(res, error ? new Error('cannot find item: ' + error.message) : this.sanitize(data, authorized))
         })
         return
       }
@@ -174,7 +174,7 @@ class Route {
       // We're looking for all records
       this.model.find({}, (error, data) => {
         error ? this.onEvent(EVENTS.GET_ALL_ERROR, error) : this.onEvent(EVENTS.GET_ALL_OK, data)
-        this.respond(res, error ? new Error('cannot find items') : this.sanitize(data, authorized))
+        this.respond(res, error ? new Error('cannot find items: ' + error.message) : this.sanitize(data, authorized))
       })
     })
   }
@@ -182,7 +182,8 @@ class Route {
   post (req, res, next) {
     this.model.create(req.body, (error, data) => {
       error ? this.onEvent(EVENTS.POST_ERROR, error) : this.onEvent(EVENTS.POST_OK, data)
-      this.respond(res, error ? new Error('cannot create item') : this.sanitize(data))
+      error ? utils.logError(error) : utils.logInfo(chalk.green('post ok'))
+      this.respond(res, error ? new Error('cannot create item: ' + error.message) : this.sanitize(data))
     })
   }
 
