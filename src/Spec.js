@@ -16,6 +16,12 @@ class Spec {
       // Attempt to load from file, if any
       const raw = yaml.safeLoad(fs.readFileSync(this.file, 'utf8'))
       this._data = this.root ? raw[this.root] : raw
+      this._routesDir = path.resolve(path.dirname(this.file), this.root || '', 'routes')
+
+      if (this._data.routes) {
+        // Resolve the routes
+        this._data.routes = this._data.routes.map(route => this.loadRoute(route))
+      }
 
       // Attempt to load from secure file, if any
       this._data.secure = yaml.safeLoad(fs.readFileSync(this.secureFile, 'utf8'))
@@ -23,8 +29,23 @@ class Spec {
     }
   }
 
+  loadRoute (route) {
+    try {
+      // Attempt to load from file, if any
+      return Object.assign(route, yaml.safeLoad(fs.readFileSync(path.resolve(this.routesDir, route.name + ".yaml"), 'utf8')))
+    } catch (e) {
+    }
+
+    return route
+  }
+
+
   get root() {
     return this._root
+  }
+
+  get routesDir() {
+    return this._routesDir
   }
 
   get exists() {
