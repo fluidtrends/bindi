@@ -152,11 +152,11 @@ class Route {
     }
 
     const context = {
-      notifier: new Notifier(this.spec)
+      // notifier: new Notifier(this.spec)
     }
 
     this.functions.forEach(func => {
-      func.exec(this, data, { notifier })
+      func.exec(this, data, context)
     })
   }
 
