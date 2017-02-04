@@ -4,9 +4,10 @@ const chalk = require('chalk')
 const Server = require('./Server')
 const Spec = require('./Spec')
 const utils = require('./utils')
+const path = require('path')
 
-function start() {
-  const spec = new Spec('bindi.yaml')
+function start(file) {
+  const spec = new Spec(path.resolve(file))
   if (!spec.exists) {
     utils.logError('The bindi.yaml file is missing')
     return

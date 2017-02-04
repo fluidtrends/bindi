@@ -2,6 +2,7 @@ name: test
 settings:
   port: 9000
   root: /api
+  awsConfigFile: config.json
 email:
   from: test@test.test
 database:

@@ -6,7 +6,6 @@ const chalk = require('chalk')
 const utils = require('./utils')
 const mongoose = require('mongoose')
 const moment = require('moment')
-const Function = require('./Function')
 
 const EVENTS = ({
   POST_OK: "POST_OK",
@@ -152,8 +151,12 @@ class Route {
       return
     }
 
+    const context = {
+      notifier: new Notifier(this.spec)
+    }
+
     this.functions.forEach(func => {
-      func.exec(data)
+      func.exec(this, data, { notifier })
     })
   }
 

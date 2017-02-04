@@ -6,7 +6,11 @@ database:
   name: bindi
   host: localhost
 email:
-  from: 40 De Zile Pentru Viață <40@proviata.ro>
+  from: email@email.email
+  to:
+  - email@email.email
+  - email2@gmail.com
+  replyTo: email@email.email
 routes:
   - name: events
     path: /events/:id?

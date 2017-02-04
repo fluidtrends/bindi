@@ -8,6 +8,7 @@ const passport    = require('passport')
 const bodyParser  = require('body-parser')
 const cors        = require('cors')
 const mongoose    = require('mongoose')
+const pm2         = require('pm2')
 
 class Server {
 
